@@ -37,7 +37,7 @@ public class ZomebieController : MonoBehaviour
 
     void Move()
     {
-        transform.LookAt(Camera.main.transform.position);
+        transform.LookAt(Vector3.zero);
         transform.Translate(Vector3.forward * Time.deltaTime);
         transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
     }
@@ -61,7 +61,7 @@ public class ZomebieController : MonoBehaviour
     void Attack()
     {
         isZombieAttacking = true;
-        GetComponent<Animation>().Play("Zombie Attack");
+        GetComponent<Animator>().Play("Zombie Attack");
         attackSound.Play();
         StartCoroutine(finishAttacking());
     }
