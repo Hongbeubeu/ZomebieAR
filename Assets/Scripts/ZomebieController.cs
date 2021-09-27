@@ -7,6 +7,7 @@ public class ZomebieController : MonoBehaviour
     private bool isZombieClose;
     public int timeBetweenAttacks = 3;
     private float attackCooldownTimer;
+    private bool isZombieAttacking;
     private void Start()
     {
         attackCooldownTimer = timeBetweenAttacks;
@@ -14,6 +15,8 @@ public class ZomebieController : MonoBehaviour
 
     private void Update()
     {
+        if (isZombieAttacking)
+            return;
         Move();
 
         attackCooldownTimer -= Time.deltaTime;
@@ -49,6 +52,14 @@ public class ZomebieController : MonoBehaviour
 
     void Attack()
     {
+        isZombieAttacking = true;
         GetComponent<Animation>().Play("Zombie Attack");
+        StartCoroutine(finishAttacking());
+    }
+
+    private IEnumerator finishAttacking()
+    {
+        yield return new WaitForSeconds(1.2f);
+        isZombieAttacking = false;
     }
 }
