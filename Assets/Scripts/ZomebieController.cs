@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ZomebieController : MonoBehaviour
 {
+    private AudioSource attackSound;
     private bool isZombieClose;
     public int timeBetweenAttacks = 3;
     private float attackCooldownTimer;
@@ -11,6 +12,7 @@ public class ZomebieController : MonoBehaviour
     private void Start()
     {
         attackCooldownTimer = timeBetweenAttacks;
+        InitializeSounds();
     }
 
     private void Update()
@@ -25,6 +27,12 @@ public class ZomebieController : MonoBehaviour
             Attack();
             attackCooldownTimer = timeBetweenAttacks;
         }
+    }
+
+    void InitializeSounds()
+    {
+        AudioSource[] audioSources = GetComponents<AudioSource>();
+        attackSound = audioSources[0];
     }
 
     void Move()
@@ -54,6 +62,7 @@ public class ZomebieController : MonoBehaviour
     {
         isZombieAttacking = true;
         GetComponent<Animation>().Play("Zombie Attack");
+        attackSound.Play();
         StartCoroutine(finishAttacking());
     }
 
