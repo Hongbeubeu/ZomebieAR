@@ -48,12 +48,6 @@ namespace GoogleARCore.Examples.HelloAR
         public InstantPlacementMenu InstantPlacementMenu;
 
         /// <summary>
-        /// A prefab to place when an instant placement raycast from a user touch hits an instant
-        /// placement point.
-        /// </summary>
-        public GameObject InstantPlacementPrefab;
-
-        /// <summary>
         /// The first-person camera being used to render the passthrough camera image (i.e. AR
         /// background).
         /// </summary>
@@ -185,7 +179,7 @@ namespace GoogleARCore.Examples.HelloAR
                     GameObject prefab;
                     if (hit.Trackable is InstantPlacementPoint)
                     {
-                        prefab = InstantPlacementPrefab;
+                        prefab = dummyPrefab;
                     }
                     else if (hit.Trackable is FeaturePoint)
                     {
