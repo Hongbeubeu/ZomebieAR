@@ -24,6 +24,7 @@ namespace GoogleARCore.Examples.HelloAR
     using GoogleARCore;
     using GoogleARCore.Examples.Common;
     using UnityEngine;
+    using UnityEngine.UI;
     using UnityEngine.EventSystems;
 
 #if UNITY_EDITOR
@@ -34,7 +35,7 @@ namespace GoogleARCore.Examples.HelloAR
     /// <summary>
     /// Controls the HelloAR example.
     /// </summary>
-    public class HelloARController : MonoBehaviour
+    public class GameInitController : MonoBehaviour
     {
         /// <summary>
         /// The Depth Setting Menu.
@@ -88,6 +89,19 @@ namespace GoogleARCore.Examples.HelloAR
         /// otherwise false.
         /// </summary>
         private bool _isQuitting = false;
+
+        public Button placeGroundButton;
+        public Button placeTombButton;
+        public Button startGameObject;
+        public GameObject dummyPrefab;
+        public GameObject groundPlanePrefab;
+        public GameObject tombPrefab;
+        private GameObject groundPlaneGO;
+        private GameObject dummyGO;
+        private bool isDummyInitialized;
+        private bool isGroundPlaced;
+        private bool hasGameStarted;
+        private int numOfTombsPlaced = 0;
 
         /// <summary>
         /// The Unity Awake() method.
