@@ -1,6 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using GoogleARCore.Examples.HelloAR;
 
 public class ZomebieController : MonoBehaviour
 {
@@ -9,6 +9,7 @@ public class ZomebieController : MonoBehaviour
     public int timeBetweenAttacks = 3;
     private float attackCooldownTimer;
     private bool isZombieAttacking;
+    GameInitController gameInitController;
     private void Start()
     {
         attackCooldownTimer = timeBetweenAttacks;
@@ -17,6 +18,8 @@ public class ZomebieController : MonoBehaviour
 
     private void Update()
     {
+        if (!gameInitController.started)
+            return;
         if (isZombieAttacking)
             return;
         Move();

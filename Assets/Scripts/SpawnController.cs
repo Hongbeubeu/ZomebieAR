@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 
 public class SpawnController : MonoBehaviour
 {
     public GameObject femaleZombiePrefab;
-
     private void Start()
     {
         InvokeRepeating("SpawnZombie", Random.Range(0f, 2f), Random.Range(10f, 15f));

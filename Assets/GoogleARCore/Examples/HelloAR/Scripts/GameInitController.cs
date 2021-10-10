@@ -20,7 +20,6 @@
 
 namespace GoogleARCore.Examples.HelloAR
 {
-    using System.Collections.Generic;
     using GoogleARCore;
     using GoogleARCore.Examples.Common;
     using UnityEngine;
@@ -86,7 +85,7 @@ namespace GoogleARCore.Examples.HelloAR
 
         public Button placeGroundButton;
         public Button placeTombButton;
-        public Button startGameObject;
+        public Button startGameButton;
         public GameObject dummyPrefab;
         public GameObject groundPlanePrefab;
         public GameObject tombPrefab;
@@ -96,6 +95,9 @@ namespace GoogleARCore.Examples.HelloAR
         private bool isGroundPlaced;
         private bool hasGameStarted;
         private int numOfTombsPlaced = 0;
+        private GameObject dumm;
+        private bool isPlacedDumm = false;
+        public bool started = false;
 
         /// <summary>
         /// The Unity Awake() method.
@@ -105,6 +107,9 @@ namespace GoogleARCore.Examples.HelloAR
             // Enable ARCore to target 60fps camera capture frame rate on supported devices.
             // Note, Application.targetFrameRate is ignored when QualitySettings.vSyncCount != 0.
             Application.targetFrameRate = 60;
+            placeTombButton.gameObject.SetActive(false);
+            placeGroundButton.gameObject.SetActive(false);
+            startGameButton.gameObject.SetActive(false);
         }
 
         /// <summary>
@@ -129,7 +134,10 @@ namespace GoogleARCore.Examples.HelloAR
             // and the app will play the recorded camera stream install of using the real time
             // camera stream.
             UpdateApplicationLifecycle();
-
+            if (isPlacedDumm)
+            {
+                return;
+            }
             // If the player has not touched the screen, we are done with this update.
             Touch touch;
             if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
@@ -207,25 +215,28 @@ namespace GoogleARCore.Examples.HelloAR
                     }
 
                     // Instantiate prefab at the hit pose.
-                    var gameObject = Instantiate(prefab, hit.Pose.position, hit.Pose.rotation);
+                    dumm = Instantiate(prefab, hit.Pose.position, hit.Pose.rotation);
 
                     // Compensate for the hitPose rotation facing away from the raycast (i.e.
                     // camera).
-                    gameObject.transform.Rotate(0, _prefabRotation, 0, Space.Self);
+                    dumm.transform.Rotate(0, _prefabRotation, 0, Space.Self);
 
                     // Create an anchor to allow ARCore to track the hitpoint as understanding of
                     // the physical world evolves.
                     var anchor = hit.Trackable.CreateAnchor(hit.Pose);
 
                     // Make game object a child of the anchor.
-                    gameObject.transform.parent = anchor.transform;
+                    dumm.transform.parent = anchor.transform;
 
                     // Initialize Instant Placement Effect.
-                    if (hit.Trackable is InstantPlacementPoint)
-                    {
-                        gameObject.GetComponentInChildren<InstantPlacementEffect>()
-                            .InitializeWithTrackable(hit.Trackable);
-                    }
+                    // if (hit.Trackable is InstantPlacementPoint)
+                    // {
+                    //     dumm.GetComponentInChildren<InstantPlacementEffect>()
+                    //         .InitializeWithTrackable(hit.Trackable);
+                    // }
+                    isPlacedDumm = true;
+                    placeGroundButton.gameObject.SetActive(true);
+                    placeGroundButton.onClick.AddListener(PlaceGround);
                 }
             }
         }
@@ -301,6 +312,33 @@ namespace GoogleARCore.Examples.HelloAR
                             "makeText", unityActivity, message, 0);
                     toastObject.Call("show");
                 }));
+            }
+        }
+
+        public void PlaceGround()
+        {
+            Vector3 pos = dumm.transform.position;
+            Quaternion rotation = dumm.transform.rotation;
+            groundPlaneGO = Instantiate(groundPlanePrefab, pos, rotation);
+            Destroy(dumm);
+            placeTombButton.gameObject.SetActive(true);
+            placeTombButton.onClick.AddListener(PlaceTomb);
+        }
+
+        public void PlaceTomb()
+        {
+            Vector3 pos = FirstPersonCamera.transform.position;
+            Instantiate(tombPrefab, pos, Quaternion.identity);
+            numOfTombsPlaced++;
+            if (numOfTombsPlaced == 5)
+            {
+                startGameButton.gameObject.SetActive(true);
+                startGameButton.onClick.AddListener(delegate
+                {
+                    started = true;
+                    placeTombButton.gameObject.SetActive(false);
+                    startGameButton.gameObject.SetActive(false);
+                });
             }
         }
     }
