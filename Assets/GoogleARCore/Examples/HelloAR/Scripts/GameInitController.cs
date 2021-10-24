@@ -25,10 +25,10 @@ namespace GoogleARCore.Examples.HelloAR
     using UnityEngine;
     using UnityEngine.UI;
     using UnityEngine.EventSystems;
-
 #if UNITY_EDITOR
     // Set up touch input propagation while using Instant Preview in the editor.
     using Input = InstantPreviewInput;
+
 #endif
 
     /// <summary>
@@ -138,6 +138,7 @@ namespace GoogleARCore.Examples.HelloAR
             {
                 return;
             }
+
             // If the player has not touched the screen, we are done with this update.
             Touch touch;
             if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
@@ -155,7 +156,7 @@ namespace GoogleARCore.Examples.HelloAR
             TrackableHit hit;
             bool foundHit = false;
             TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon |
-                TrackableHitFlags.FeaturePointWithSurfaceNormal;
+                                              TrackableHitFlags.FeaturePointWithSurfaceNormal;
             // Allows the depth image to be queried for hit tests.
             raycastFilter |= TrackableHitFlags.Depth;
             foundHit = Frame.Raycast(touch.position.x, touch.position.y, raycastFilter, out hit);
@@ -179,64 +180,20 @@ namespace GoogleARCore.Examples.HelloAR
                 {
                     if (DepthMenu != null)
                     {
-                        // Show depth card window if necessary.
                         DepthMenu.ConfigureDepthBeforePlacingFirstAsset();
                     }
 
-                    // Choose the prefab based on the Trackable that got hit.
-                    GameObject prefab;
-                    if (hit.Trackable is InstantPlacementPoint)
-                    {
-                        prefab = dummyPrefab;
-                    }
-                    else if (hit.Trackable is FeaturePoint)
-                    {
-                        prefab = GameObjectPointPrefab;
-                    }
-                    else if (hit.Trackable is DepthPoint)
-                    {
-                        prefab = GameObjectDepthPointPrefab;
-                    }
-                    else if (hit.Trackable is DetectedPlane)
+                    if (hit.Trackable is DetectedPlane)
                     {
                         DetectedPlane detectedPlane = hit.Trackable as DetectedPlane;
-                        if (detectedPlane.PlaneType == DetectedPlaneType.Vertical)
-                        {
-                            prefab = GameObjectVerticalPlanePrefab;
-                        }
-                        else
-                        {
-                            prefab = GameObjectHorizontalPlanePrefab;
-                        }
+                        isPlacedDumm = true;
+                        placeGroundButton.gameObject.SetActive(true);
+                        placeGroundButton.onClick.AddListener(PlaceGround);
+                        dumm = Instantiate(dummyPrefab, hit.Pose.position, hit.Pose.rotation);
+                        dumm.transform.Rotate(0, _prefabRotation, 0, Space.Self);
+                        var anchor = hit.Trackable.CreateAnchor(hit.Pose);
+                        dumm.transform.parent = anchor.transform;
                     }
-                    else
-                    {
-                        prefab = GameObjectHorizontalPlanePrefab;
-                    }
-
-                    // Instantiate prefab at the hit pose.
-                    dumm = Instantiate(prefab, hit.Pose.position, hit.Pose.rotation);
-
-                    // Compensate for the hitPose rotation facing away from the raycast (i.e.
-                    // camera).
-                    dumm.transform.Rotate(0, _prefabRotation, 0, Space.Self);
-
-                    // Create an anchor to allow ARCore to track the hitpoint as understanding of
-                    // the physical world evolves.
-                    var anchor = hit.Trackable.CreateAnchor(hit.Pose);
-
-                    // Make game object a child of the anchor.
-                    dumm.transform.parent = anchor.transform;
-
-                    // Initialize Instant Placement Effect.
-                    // if (hit.Trackable is InstantPlacementPoint)
-                    // {
-                    //     dumm.GetComponentInChildren<InstantPlacementEffect>()
-                    //         .InitializeWithTrackable(hit.Trackable);
-                    // }
-                    isPlacedDumm = true;
-                    placeGroundButton.gameObject.SetActive(true);
-                    placeGroundButton.onClick.AddListener(PlaceGround);
                 }
             }
         }
@@ -273,14 +230,14 @@ namespace GoogleARCore.Examples.HelloAR
             {
                 ShowAndroidToastMessage("Camera permission is needed to run this application.");
                 _isQuitting = true;
-                Invoke("DoQuit", 0.5f);
+                Invoke(nameof(DoQuit), 0.5f);
             }
             else if (Session.Status.IsError())
             {
                 ShowAndroidToastMessage(
                     "ARCore encountered a problem connecting.  Please start the app again.");
                 _isQuitting = true;
-                Invoke("DoQuit", 0.5f);
+                Invoke(nameof(DoQuit), 0.5f);
             }
         }
 
@@ -302,30 +259,28 @@ namespace GoogleARCore.Examples.HelloAR
             AndroidJavaObject unityActivity =
                 unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
 
-            if (unityActivity != null)
+            if (unityActivity == null) return;
+            AndroidJavaClass toastClass = new AndroidJavaClass("android.widget.Toast");
+            unityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
             {
-                AndroidJavaClass toastClass = new AndroidJavaClass("android.widget.Toast");
-                unityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
-                {
-                    AndroidJavaObject toastObject =
-                        toastClass.CallStatic<AndroidJavaObject>(
-                            "makeText", unityActivity, message, 0);
-                    toastObject.Call("show");
-                }));
-            }
+                AndroidJavaObject toastObject =
+                    toastClass.CallStatic<AndroidJavaObject>(
+                        "makeText", unityActivity, message, 0);
+                toastObject.Call("show");
+            }));
         }
 
-        public void PlaceGround()
+        private void PlaceGround()
         {
             Vector3 pos = dumm.transform.position;
-            Quaternion rotation = dumm.transform.rotation;
-            groundPlaneGO = Instantiate(groundPlanePrefab, pos, rotation);
+            groundPlaneGO = Instantiate(groundPlanePrefab, Vector3.zero, Quaternion.identity);
             Destroy(dumm);
+            placeGroundButton.gameObject.SetActive(false);
             placeTombButton.gameObject.SetActive(true);
             placeTombButton.onClick.AddListener(PlaceTomb);
         }
 
-        public void PlaceTomb()
+        private void PlaceTomb()
         {
             Vector3 pos = FirstPersonCamera.transform.position;
             Instantiate(tombPrefab, pos, Quaternion.identity);
