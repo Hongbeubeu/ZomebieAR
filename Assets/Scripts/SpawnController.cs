@@ -6,7 +6,7 @@ public class SpawnController : MonoBehaviour
     public GameObject femaleZombiePrefab;
     private void Start()
     {
-        InvokeRepeating("SpawnZombie", Random.Range(0f, 2f), Random.Range(10f, 15f));
+//        InvokeRepeating(nameof(SpawnZombie), Random.Range(0f, 2f), Random.Range(10f, 15f));
     }
 
     private void SpawnZombie()

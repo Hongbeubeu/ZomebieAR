@@ -9,7 +9,7 @@ public class ZomebieController : MonoBehaviour
     public int timeBetweenAttacks = 3;
     private float attackCooldownTimer;
     private bool isZombieAttacking;
-    GameInitController gameInitController;
+    private GameInitController gameInitController;
     private void Start()
     {
         attackCooldownTimer = timeBetweenAttacks;
@@ -32,13 +32,13 @@ public class ZomebieController : MonoBehaviour
         }
     }
 
-    void InitializeSounds()
+    private void InitializeSounds()
     {
-        AudioSource[] audioSources = GetComponents<AudioSource>();
+        var audioSources = GetComponents<AudioSource>();
         attackSound = audioSources[0];
     }
 
-    void Move()
+    private void Move()
     {
         transform.LookAt(Vector3.zero);
         transform.Translate(Vector3.forward * Time.deltaTime);
@@ -61,7 +61,7 @@ public class ZomebieController : MonoBehaviour
         }
     }
 
-    void Attack()
+    private void Attack()
     {
         isZombieAttacking = true;
         GetComponent<Animator>().Play("Zombie Attack");

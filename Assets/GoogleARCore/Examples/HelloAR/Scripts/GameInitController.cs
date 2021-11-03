@@ -97,6 +97,7 @@ namespace GoogleARCore.Examples.HelloAR
         private int numOfTombsPlaced = 0;
         private GameObject dumm;
         private bool isPlacedDumm = false;
+        private Anchor groundAnchor;
         public bool started = false;
 
         /// <summary>
@@ -191,8 +192,8 @@ namespace GoogleARCore.Examples.HelloAR
                         placeGroundButton.onClick.AddListener(PlaceGround);
                         dumm = Instantiate(dummyPrefab, hit.Pose.position, hit.Pose.rotation);
                         dumm.transform.Rotate(0, _prefabRotation, 0, Space.Self);
-                        var anchor = hit.Trackable.CreateAnchor(hit.Pose);
-                        dumm.transform.parent = anchor.transform;
+                        groundAnchor = hit.Trackable.CreateAnchor(hit.Pose);
+                        dumm.transform.parent = groundAnchor.transform;
                     }
                 }
             }
@@ -274,6 +275,7 @@ namespace GoogleARCore.Examples.HelloAR
         {
             Vector3 pos = dumm.transform.position;
             groundPlaneGO = Instantiate(groundPlanePrefab, Vector3.zero, Quaternion.identity);
+            groundPlaneGO.transform.parent = groundAnchor.transform;
             Destroy(dumm);
             placeGroundButton.gameObject.SetActive(false);
             placeTombButton.gameObject.SetActive(true);
@@ -283,7 +285,8 @@ namespace GoogleARCore.Examples.HelloAR
         private void PlaceTomb()
         {
             Vector3 pos = FirstPersonCamera.transform.position;
-            Instantiate(tombPrefab, pos, Quaternion.identity);
+            pos.y = groundPlaneGO.transform.position.y;
+            Instantiate(tombPrefab, pos, Quaternion.identity).transform.SetParent(groundPlaneGO.transform);
             numOfTombsPlaced++;
             if (numOfTombsPlaced == 5)
             {

@@ -1087,7 +1087,7 @@ MonoBehaviour:
   GameObjectDepthPointPrefab: {fileID: 1513252861858756, guid: 8b604092cbb3d482da82845b61a6809b, type: 3}
   placeGroundButton: {fileID: 1714754473}
   placeTombButton: {fileID: 826347480}
-  startGameButton: {fileID: 0}
+  startGameButton: {fileID: 1155886387}
   dummyPrefab: {fileID: 5453730414787016663, guid: 6c118184d3b395a4085db8fe13c2e0b2, type: 3}
   groundPlanePrefab: {fileID: 880562590100064683, guid: 48db01a3d31b70542b763ddbe991984a, type: 3}
   tombPrefab: {fileID: 2644208018494567518, guid: 2956b591483e6b342890614d2766b262, type: 3}
