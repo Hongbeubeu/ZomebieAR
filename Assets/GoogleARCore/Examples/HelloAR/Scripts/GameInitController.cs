@@ -18,10 +18,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace GoogleARCore.Examples.HelloAR
 {
     using GoogleARCore;
-    using GoogleARCore.Examples.Common;
+    using Common;
     using UnityEngine;
     using UnityEngine.UI;
     using UnityEngine.EventSystems;
@@ -98,7 +100,8 @@ namespace GoogleARCore.Examples.HelloAR
         private GameObject dumm;
         private bool isPlacedDumm = false;
         private Anchor groundAnchor;
-        public bool started = false;
+
+        private List<SpawnController> spawnControllers;
 
         /// <summary>
         /// The Unity Awake() method.
@@ -111,6 +114,7 @@ namespace GoogleARCore.Examples.HelloAR
             placeTombButton.gameObject.SetActive(false);
             placeGroundButton.gameObject.SetActive(false);
             startGameButton.gameObject.SetActive(false);
+            spawnControllers = new List<SpawnController>();
         }
 
         /// <summary>
@@ -286,17 +290,27 @@ namespace GoogleARCore.Examples.HelloAR
         {
             Vector3 pos = FirstPersonCamera.transform.position;
             pos.y = groundPlaneGO.transform.position.y;
-            Instantiate(tombPrefab, pos, Quaternion.identity).transform.SetParent(groundPlaneGO.transform);
+            var tomb = Instantiate(tombPrefab, pos, Quaternion.identity);
+            tomb.transform.SetParent(groundPlaneGO.transform);
+            spawnControllers.Add(tomb.GetComponent<SpawnController>());
             numOfTombsPlaced++;
             if (numOfTombsPlaced == 5)
             {
                 startGameButton.gameObject.SetActive(true);
                 startGameButton.onClick.AddListener(delegate
                 {
-                    started = true;
                     placeTombButton.gameObject.SetActive(false);
                     startGameButton.gameObject.SetActive(false);
+                    StartSpawnZombie();
                 });
+            }
+        }
+
+        private void StartSpawnZombie()
+        {
+            foreach (var controller in spawnControllers)
+            {
+                controller.InvokeSpawnZombie();
             }
         }
     }

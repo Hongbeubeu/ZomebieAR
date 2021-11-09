@@ -171,8 +171,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 2, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 14.408139, z: 1}
+  m_Center: {x: 0, y: -6.2040677, z: 0}
 --- !u!114 &53379606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1091,7 +1091,6 @@ MonoBehaviour:
   dummyPrefab: {fileID: 5453730414787016663, guid: 6c118184d3b395a4085db8fe13c2e0b2, type: 3}
   groundPlanePrefab: {fileID: 880562590100064683, guid: 48db01a3d31b70542b763ddbe991984a, type: 3}
   tombPrefab: {fileID: 2644208018494567518, guid: 2956b591483e6b342890614d2766b262, type: 3}
-  started: 0
 --- !u!114 &627916104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1557,7 +1556,7 @@ GameObject:
   - component: {fileID: 793454579}
   - component: {fileID: 793454578}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: ARCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1819,7 +1818,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 544.3, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 500, y: 150}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &826347480
@@ -2677,7 +2676,7 @@ GameObject:
   - component: {fileID: 1099390797}
   - component: {fileID: 1099390796}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -9,7 +9,6 @@ public class ZomebieController : MonoBehaviour
     public int timeBetweenAttacks = 3;
     private float attackCooldownTimer;
     private bool isZombieAttacking;
-    private GameInitController gameInitController;
     private void Start()
     {
         attackCooldownTimer = timeBetweenAttacks;
@@ -18,8 +17,6 @@ public class ZomebieController : MonoBehaviour
 
     private void Update()
     {
-        if (!gameInitController.started)
-            return;
         if (isZombieAttacking)
             return;
         Move();

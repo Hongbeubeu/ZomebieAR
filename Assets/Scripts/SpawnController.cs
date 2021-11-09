@@ -4,9 +4,10 @@ using UnityEngine;
 public class SpawnController : MonoBehaviour
 {
     public GameObject femaleZombiePrefab;
-    private void Start()
+
+    public void InvokeSpawnZombie()
     {
-//        InvokeRepeating(nameof(SpawnZombie), Random.Range(0f, 2f), Random.Range(10f, 15f));
+        InvokeRepeating(nameof(SpawnZombie), Random.Range(4f, 5f), Random.Range(10f, 15f));
     }
 
     private void SpawnZombie()
