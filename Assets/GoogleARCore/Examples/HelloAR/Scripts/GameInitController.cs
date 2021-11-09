@@ -84,13 +84,15 @@ namespace GoogleARCore.Examples.HelloAR
         /// otherwise false.
         /// </summary>
         private bool _isQuitting = false;
-
+        
         public Button placeGroundButton;
         public Button placeTombButton;
         public Button startGameButton;
         public GameObject dummyPrefab;
         public GameObject groundPlanePrefab;
         public GameObject tombPrefab;
+        public GameObject playPanel;
+        
         private GameObject groundPlaneGO;
         private GameObject dummyGO;
         private bool isDummyInitialized;
@@ -114,6 +116,7 @@ namespace GoogleARCore.Examples.HelloAR
             placeTombButton.gameObject.SetActive(false);
             placeGroundButton.gameObject.SetActive(false);
             startGameButton.gameObject.SetActive(false);
+            playPanel.gameObject.SetActive(false);
             spawnControllers = new List<SpawnController>();
         }
 
@@ -301,6 +304,7 @@ namespace GoogleARCore.Examples.HelloAR
                 {
                     placeTombButton.gameObject.SetActive(false);
                     startGameButton.gameObject.SetActive(false);
+                    playPanel.gameObject.SetActive(true);
                     StartSpawnZombie();
                 });
             }
