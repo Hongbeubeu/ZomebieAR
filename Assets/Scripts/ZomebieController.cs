@@ -9,6 +9,8 @@ public class ZomebieController : MonoBehaviour
     public int timeBetweenAttacks = 3;
     private float attackCooldownTimer;
     private bool isZombieAttacking;
+    [SerializeReference] private Animator anim;
+
     private void Start()
     {
         attackCooldownTimer = timeBetweenAttacks;
@@ -61,7 +63,7 @@ public class ZomebieController : MonoBehaviour
     private void Attack()
     {
         isZombieAttacking = true;
-        GetComponent<Animator>().Play("Zombie Attack");
+        anim.SetTrigger(Constants.Attack);
         attackSound.Play();
         StartCoroutine(finishAttacking());
     }
