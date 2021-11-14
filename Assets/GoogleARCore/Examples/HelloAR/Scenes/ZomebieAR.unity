@@ -489,6 +489,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootButton: {fileID: 1881555838}
   fpsCam: {fileID: 53379610}
+  bloodEffect: {fileID: 6164802978421636020, guid: c3243ba814dfefe49b77e5c3bc9c22ba, type: 3}
 --- !u!1 &203965840
 GameObject:
   m_ObjectHideFlags: 0

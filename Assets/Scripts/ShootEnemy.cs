@@ -6,6 +6,7 @@ public class ShootEnemy : MonoBehaviour
     public Button shootButton;
     public Camera fpsCam;
     private float damage;
+    [SerializeField] private GameObject bloodEffect;
 
     private void Start()
     {
@@ -21,6 +22,8 @@ public class ShootEnemy : MonoBehaviour
             if (target != null)
             {
                 target.TakeDamage(damage);
+                var bloodEffectGO = Instantiate(this.bloodEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                Destroy(bloodEffectGO, 0.2f);
             }
         }
     }

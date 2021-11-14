@@ -209,7 +209,7 @@ namespace GoogleARCore.Examples.HelloAR
         {
             // Exit the app when the 'back' button is pressed.
             if (Input.GetKey(KeyCode.Escape))
-            {
+            { 
                 Application.Quit();
             }
 
