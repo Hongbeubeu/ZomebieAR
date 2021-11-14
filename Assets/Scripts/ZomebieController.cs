@@ -65,10 +65,10 @@ public class ZomebieController : MonoBehaviour
         isZombieAttacking = true;
         anim.SetTrigger(Constants.Attack);
         attackSound.Play();
-        StartCoroutine(finishAttacking());
+        StartCoroutine(FinishAttacking());
     }
 
-    private IEnumerator finishAttacking()
+    private IEnumerator FinishAttacking()
     {
         yield return new WaitForSeconds(1.2f);
         isZombieAttacking = false;

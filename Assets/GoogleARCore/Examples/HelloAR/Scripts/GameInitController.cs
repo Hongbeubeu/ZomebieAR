@@ -84,15 +84,15 @@ namespace GoogleARCore.Examples.HelloAR
         /// otherwise false.
         /// </summary>
         private bool _isQuitting = false;
-        
-        public Button placeGroundButton;
-        public Button placeTombButton;
-        public Button startGameButton;
+
+//        public Button placeGroundButton;
+//        public Button placeTombButton;
+//        public Button startGameButton;
         public GameObject dummyPrefab;
         public GameObject groundPlanePrefab;
         public GameObject tombPrefab;
-        public GameObject playPanel;
-        
+//        public GameObject playPanel;
+
         private GameObject groundPlaneGO;
         private GameObject dummyGO;
         private bool isDummyInitialized;
@@ -113,10 +113,6 @@ namespace GoogleARCore.Examples.HelloAR
             // Enable ARCore to target 60fps camera capture frame rate on supported devices.
             // Note, Application.targetFrameRate is ignored when QualitySettings.vSyncCount != 0.
             Application.targetFrameRate = 60;
-            placeTombButton.gameObject.SetActive(false);
-            placeGroundButton.gameObject.SetActive(false);
-            startGameButton.gameObject.SetActive(false);
-            playPanel.gameObject.SetActive(false);
             spawnControllers = new List<SpawnController>();
         }
 
@@ -195,8 +191,8 @@ namespace GoogleARCore.Examples.HelloAR
                     {
                         DetectedPlane detectedPlane = hit.Trackable as DetectedPlane;
                         isPlacedDumm = true;
-                        placeGroundButton.gameObject.SetActive(true);
-                        placeGroundButton.onClick.AddListener(PlaceGround);
+                        UIManager.instance.initGamePanel.SetActivePlaceGroundButton(true);
+                        UIManager.instance.initGamePanel.placeGroundButton.onClick.AddListener(PlaceGround);
                         dumm = Instantiate(dummyPrefab, hit.Pose.position, hit.Pose.rotation);
                         dumm.transform.Rotate(0, _prefabRotation, 0, Space.Self);
                         groundAnchor = hit.Trackable.CreateAnchor(hit.Pose);
@@ -280,13 +276,13 @@ namespace GoogleARCore.Examples.HelloAR
 
         private void PlaceGround()
         {
-            Vector3 pos = dumm.transform.position;
+//            Vector3 pos = dumm.transform.position;
             groundPlaneGO = Instantiate(groundPlanePrefab, Vector3.zero, Quaternion.identity);
             groundPlaneGO.transform.parent = groundAnchor.transform;
             Destroy(dumm);
-            placeGroundButton.gameObject.SetActive(false);
-            placeTombButton.gameObject.SetActive(true);
-            placeTombButton.onClick.AddListener(PlaceTomb);
+            UIManager.instance.initGamePanel.SetActivePlaceGroundButton(false);
+            UIManager.instance.initGamePanel.SetActivePlaceTombButton(true);
+            UIManager.instance.initGamePanel.placeTombButton.onClick.AddListener(PlaceTomb);
         }
 
         private void PlaceTomb()
@@ -299,12 +295,12 @@ namespace GoogleARCore.Examples.HelloAR
             numOfTombsPlaced++;
             if (numOfTombsPlaced == 5)
             {
-                startGameButton.gameObject.SetActive(true);
-                startGameButton.onClick.AddListener(delegate
+                UIManager.instance.initGamePanel.SetActiveStartGameButton(true);
+                UIManager.instance.initGamePanel.startGameButton.onClick.AddListener(delegate
                 {
-                    placeTombButton.gameObject.SetActive(false);
-                    startGameButton.gameObject.SetActive(false);
-                    playPanel.gameObject.SetActive(true);
+                    UIManager.instance.initGamePanel.SetActivePlaceTombButton(false);
+                    UIManager.instance.initGamePanel.SetActiveStartGameButton(false);
+                    UIManager.instance.inGamePanel.SetActive(true);
                     StartSpawnZombie();
                 });
             }
