@@ -490,6 +490,7 @@ MonoBehaviour:
   shootButton: {fileID: 1881555838}
   fpsCam: {fileID: 53379610}
   bloodEffect: {fileID: 6164802978421636020, guid: c3243ba814dfefe49b77e5c3bc9c22ba, type: 3}
+  shootingEffect: {fileID: 8300576587821868194, guid: b45e434dc8d167541a57d4930011efe6, type: 3}
 --- !u!1 &203965840
 GameObject:
   m_ObjectHideFlags: 0
