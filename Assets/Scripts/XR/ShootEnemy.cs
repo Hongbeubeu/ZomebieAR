@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,15 +11,25 @@ public class ShootEnemy : MonoBehaviour
     [SerializeField] private GameObject bloodEffect;
     [SerializeField] private GameObject shootingEffect;
 
-    private AudioSource fireSound;
-    private AudioSource reloadSound;
+    [SerializeField] private AudioSource fireSound;
+    [SerializeField] AudioSource reloadSound;
 
     private void Start()
     {
-        shootButton.onClick.AddListener(OnShoot);
-        AudioSource[] sounds = GetComponents<AudioSource>();
-        fireSound = sounds[0];
-        reloadSound = sounds[1];
+//        shootButton.onClick.AddListener(OnShoot);
+//        AudioSource[] sounds = GetComponents<AudioSource>();
+//        fireSound = sounds[0];
+//        reloadSound = sounds[1];
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            OnShoot();
+        }
+
+//        Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward);
     }
 
     private void OnShoot()
@@ -27,7 +38,7 @@ public class ShootEnemy : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit))
         {
-            var target = hit.transform.GetComponent<Enemy>();
+            var target = hit.transform.GetComponent<ZomebieController>();
             if (target != null)
             {
                 target.TakeDamage(damage);
@@ -40,10 +51,10 @@ public class ShootEnemy : MonoBehaviour
                 Destroy(shootEffectGO, 0.2f);
             }
 
-            if (hit.rigidbody != null)
-            {
-                hit.rigidbody.AddForce(hit.normal * forceAdd);
-            }
+//            if (hit.rigidbody != null)
+//            {
+//                hit.rigidbody.AddForce(hit.normal * forceAdd);
+//            }
         }
     }
 }

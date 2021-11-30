@@ -4,23 +4,39 @@ using GoogleARCore.Examples.HelloAR;
 
 public class ZomebieController : MonoBehaviour
 {
+    private float health = 100f;
+    [SerializeField] private AudioSource bloodHit;
     private AudioSource attackSound;
     private bool isZombieClose;
     public int timeBetweenAttacks = 3;
     private float attackCooldownTimer;
     private bool isZombieAttacking;
-    [SerializeReference] private Animator anim;
+    private bool isRunning = false;
+    [SerializeReference] private Animator animator;
+    [SerializeField] private CapsuleCollider zombieCollider;
+    [SerializeField] private Rigidbody zombieRigidbody;
 
     private void Start()
     {
         attackCooldownTimer = timeBetweenAttacks;
         InitializeSounds();
+        AwakeAnim();
+        StartCoroutine(WaitToStand());
     }
+
 
     private void Update()
     {
-        if (isZombieAttacking)
+        if (!isRunning)
+        {
             return;
+        }
+
+        if (isZombieAttacking)
+        {
+            return;
+        }
+
         Move();
 
         attackCooldownTimer -= Time.deltaTime;
@@ -44,6 +60,36 @@ public class ZomebieController : MonoBehaviour
         transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
     }
 
+    public void TakeDamage(float damage)
+    {
+        bloodHit.Play();
+        health -= damage;
+        if (health < 0f)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        animator.SetTrigger(Constants.Die);
+        isRunning = false;
+        Destroy(gameObject, 5f);
+    }
+
+    public void AwakeAnim()
+    {
+        animator.SetTrigger(Constants.Awake);
+    }
+
+    private IEnumerator WaitToStand()
+    {
+        yield return new WaitForSeconds(4.43f);
+        isRunning = false;
+        GetComponent<Collider>().enabled = true;
+        GetComponent<Rigidbody>().useGravity = true;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("MainCamera"))
@@ -63,7 +109,7 @@ public class ZomebieController : MonoBehaviour
     private void Attack()
     {
         isZombieAttacking = true;
-        anim.SetTrigger(Constants.Attack);
+        animator.SetTrigger(Constants.Attack);
         attackSound.Play();
         StartCoroutine(FinishAttacking());
     }
