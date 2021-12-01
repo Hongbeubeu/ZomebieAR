@@ -5,11 +5,12 @@ using UnityEngine.UI;
 
 public class ShootEnemy : MonoBehaviour
 {
-    [OnValueChanged("ChangeAmmoUI")] private int currentAmmo;
+    private int currentAmmo;
     public Button shootButton;
     public Camera fpsCam;
     public int forceAdd = 300;
     public float damage;
+    private float coolDown;
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject bloodEffect;
     [SerializeField] private GameObject shootingEffect;
@@ -17,9 +18,19 @@ public class ShootEnemy : MonoBehaviour
     [SerializeField] private AudioSource fireSound;
     [SerializeField] AudioSource reloadSound;
 
+    public int CurrentAmmo
+    {
+        get => currentAmmo;
+        set
+        {
+            currentAmmo = value;
+            ChangeAmmoUI();
+        }
+    }
+
     private void Awake()
     {
-
+        coolDown = 0.5f;
     }
     private void Start()
     {
@@ -27,33 +38,42 @@ public class ShootEnemy : MonoBehaviour
         //        AudioSource[] sounds = GetComponents<AudioSource>();
         //        fireSound = sounds[0];
         //        reloadSound = sounds[1];
-        currentAmmo = 30;
-        // ChangeAmmoUI();
+        CurrentAmmo = 30;
+        ChangeAmmoUI();
     }
 
     private void Update()
     {
+        if (coolDown > 0)
+        {
+            coolDown -= Time.deltaTime;
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if (currentAmmo > 0)
+            if (CurrentAmmo > 0)
             {
                 OnShoot();
+                coolDown = 0.5f;
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            animator.SetTrigger(Constants.CharatorAnimation.Reload);
-        }
+        // if (Input.GetKeyDown(KeyCode.Mouse1))
+        // {
+        //     animator.SetTrigger(Constants.CharatorAnimation.Reload);
+        // }
 
         //        Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward);
     }
 
     private void OnShoot()
     {
+        CurrentAmmo--;
+        Debug.Log(CurrentAmmo);
         fireSound.Play();
         animator.SetTrigger(Constants.CharatorAnimation.Fire);
-        currentAmmo--;
+
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit))
         {
@@ -79,8 +99,8 @@ public class ShootEnemy : MonoBehaviour
 
     private void ChangeAmmoUI()
     {
-        UIManager.instance.SetAmmoText(currentAmmo);
-        if (currentAmmo <= 0)
+        UIManager.instance.SetAmmoText(CurrentAmmo);
+        if (CurrentAmmo <= 0)
         {
             animator.SetTrigger(Constants.CharatorAnimation.Reload);
             StartCoroutine(WaitReloadAmmo());
@@ -90,6 +110,6 @@ public class ShootEnemy : MonoBehaviour
     private IEnumerator WaitReloadAmmo()
     {
         yield return new WaitForSeconds(2f);
-        currentAmmo = 30;
+        CurrentAmmo = 30;
     }
 }
