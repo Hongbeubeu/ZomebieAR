@@ -1660,6 +1660,7 @@ MonoBehaviour:
   animator: {fileID: 4257830672126540233}
   zombieCollider: {fileID: 1398606035768217521}
   zombieRigidbody: {fileID: 4257830671466170572}
+  player: {fileID: 0}
 --- !u!82 &800951203224921274
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1767,9 +1768,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 0
   m_Radius: 0.19312926
-  m_Height: 2.05928
+  m_Height: 1.7577088
   m_Direction: 1
-  m_Center: {x: 0.01322186, y: 1.0207365, z: -0.009311199}
+  m_Center: {x: 0.01322186, y: 0.8699509, z: -0.009311199}
 --- !u!54 &4257830671466170572
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1784,7 +1785,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1 &4257830672117009313
 GameObject:

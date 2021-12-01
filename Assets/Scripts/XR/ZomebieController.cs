@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-using GoogleARCore.Examples.HelloAR;
+using DG.Tweening;
 
 public class ZomebieController : MonoBehaviour
 {
@@ -12,12 +12,16 @@ public class ZomebieController : MonoBehaviour
     private float attackCooldownTimer;
     private bool isZombieAttacking;
     private bool isRunning = false;
+    private bool isDie;
     [SerializeReference] private Animator animator;
     [SerializeField] private CapsuleCollider zombieCollider;
     [SerializeField] private Rigidbody zombieRigidbody;
+    [SerializeField] private Transform player;
+    Sequence sequence;
 
     private void Start()
     {
+        player = FindObjectOfType<Player>().transform;
         attackCooldownTimer = timeBetweenAttacks;
         InitializeSounds();
         AwakeAnim();
@@ -27,12 +31,7 @@ public class ZomebieController : MonoBehaviour
 
     private void Update()
     {
-        if (!isRunning)
-        {
-            return;
-        }
-
-        if (isZombieAttacking)
+        if (!isRunning || isZombieAttacking || isDie)
         {
             return;
         }
@@ -55,8 +54,15 @@ public class ZomebieController : MonoBehaviour
 
     private void Move()
     {
-        transform.LookAt(Vector3.zero);
-        transform.Translate(Vector3.forward * Time.deltaTime);
+        var lookAt = player.position;
+        lookAt.y = transform.position.y;
+        // if (sequence == null)
+        // {
+        //     sequence = DOTween.Sequence();
+        //     sequence.Append(transform.DOLookAt(lookAt, 0.5f).SetEase(Ease.Linear)).OnComplete(() => sequence.Kill());
+        // }
+        transform.LookAt(lookAt);
+        transform.Translate(transform.forward * Time.deltaTime);
         transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
     }
 
@@ -66,26 +72,32 @@ public class ZomebieController : MonoBehaviour
         health -= damage;
         if (health < 0f)
         {
-            Die();
+            if (!isDie)
+            {
+                Die();
+            }
         }
     }
 
     private void Die()
     {
-        animator.SetTrigger(Constants.Die);
+        zombieCollider.enabled = false;
+        zombieRigidbody.useGravity = false;
         isRunning = false;
-        Destroy(gameObject, 5f);
+        isDie = true;
+        animator.SetTrigger(Constants.CharatorAnimation.Die);
+        Destroy(gameObject, 3f);
     }
 
     public void AwakeAnim()
     {
-        animator.SetTrigger(Constants.Awake);
+        animator.SetTrigger(Constants.CharatorAnimation.Awake);
     }
 
     private IEnumerator WaitToStand()
     {
         yield return new WaitForSeconds(4.43f);
-        isRunning = false;
+        isRunning = true;
         GetComponent<Collider>().enabled = true;
         GetComponent<Rigidbody>().useGravity = true;
     }
@@ -109,7 +121,7 @@ public class ZomebieController : MonoBehaviour
     private void Attack()
     {
         isZombieAttacking = true;
-        animator.SetTrigger(Constants.Attack);
+        animator.SetTrigger(Constants.CharatorAnimation.Attack);
         attackSound.Play();
         StartCoroutine(FinishAttacking());
     }

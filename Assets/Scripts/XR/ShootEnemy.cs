@@ -51,10 +51,10 @@ public class ShootEnemy : MonoBehaviour
                 Destroy(shootEffectGO, 0.2f);
             }
 
-//            if (hit.rigidbody != null)
-//            {
-//                hit.rigidbody.AddForce(hit.normal * forceAdd);
-//            }
+           if (hit.rigidbody != null)
+           {
+               hit.rigidbody.AddForce(hit.normal * forceAdd);
+           }
         }
     }
 }
