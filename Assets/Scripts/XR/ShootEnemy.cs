@@ -1,9 +1,11 @@
-using System;
+using System.Collections;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ShootEnemy : MonoBehaviour
 {
+    [OnValueChanged("ChangeAmmoUI")] private int currentAmmo;
     public Button shootButton;
     public Camera fpsCam;
     public int forceAdd = 300;
@@ -15,19 +17,28 @@ public class ShootEnemy : MonoBehaviour
     [SerializeField] private AudioSource fireSound;
     [SerializeField] AudioSource reloadSound;
 
+    private void Awake()
+    {
+
+    }
     private void Start()
     {
         //        shootButton.onClick.AddListener(OnShoot);
         //        AudioSource[] sounds = GetComponents<AudioSource>();
         //        fireSound = sounds[0];
         //        reloadSound = sounds[1];
+        currentAmmo = 30;
+        // ChangeAmmoUI();
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            OnShoot();
+            if (currentAmmo > 0)
+            {
+                OnShoot();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
@@ -42,6 +53,7 @@ public class ShootEnemy : MonoBehaviour
     {
         fireSound.Play();
         animator.SetTrigger(Constants.CharatorAnimation.Fire);
+        currentAmmo--;
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit))
         {
@@ -63,5 +75,21 @@ public class ShootEnemy : MonoBehaviour
                 hit.rigidbody.AddForce(hit.normal * forceAdd);
             }
         }
+    }
+
+    private void ChangeAmmoUI()
+    {
+        UIManager.instance.SetAmmoText(currentAmmo);
+        if (currentAmmo <= 0)
+        {
+            animator.SetTrigger(Constants.CharatorAnimation.Reload);
+            StartCoroutine(WaitReloadAmmo());
+        }
+    }
+
+    private IEnumerator WaitReloadAmmo()
+    {
+        yield return new WaitForSeconds(2f);
+        currentAmmo = 30;
     }
 }

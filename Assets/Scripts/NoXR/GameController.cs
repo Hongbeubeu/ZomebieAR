@@ -4,6 +4,7 @@ public class GameController : MonoBehaviour
 {
     private SpawnController[] spawnControllers;
     [SerializeField] private CameraLook cameraLook;
+    [SerializeField] private ShootEnemy shootEnemy;
     public void StartGame()
     {
         spawnControllers = FindObjectsOfType<SpawnController>();
@@ -11,7 +12,8 @@ public class GameController : MonoBehaviour
         {
             con.InvokeSpawnZombie();
         }
-
+        UIManager.instance.SetActiveInGamePanel(true);
         cameraLook.enabled = true;
+        shootEnemy.enabled = true;
     }
 }

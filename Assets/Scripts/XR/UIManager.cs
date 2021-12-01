@@ -25,8 +25,11 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        initGamePanel.Reset();
-        initGamePanel.SetActivePlaceGroundButton(true);
+        if (initGamePanel != null)
+        {
+            initGamePanel.Reset();
+            initGamePanel.SetActivePlaceGroundButton(true);
+        }
         inGamePanel.SetActive(false);
     }
 
@@ -41,5 +44,10 @@ public class UIManager : MonoBehaviour
     public void SetActiveInitGamePanel(bool value)
     {
         initGamePanel.gameObject.SetActive(value);
+    }
+
+    public void SetAmmoText(int ammo)
+    {
+        inGamePanel.SetAmmoText(ammo);
     }
 }
