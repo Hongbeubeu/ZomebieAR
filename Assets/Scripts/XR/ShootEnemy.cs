@@ -8,6 +8,7 @@ public class ShootEnemy : MonoBehaviour
     public Camera fpsCam;
     public int forceAdd = 300;
     public float damage;
+    [SerializeField] private Animator animator;
     [SerializeField] private GameObject bloodEffect;
     [SerializeField] private GameObject shootingEffect;
 
@@ -16,10 +17,10 @@ public class ShootEnemy : MonoBehaviour
 
     private void Start()
     {
-//        shootButton.onClick.AddListener(OnShoot);
-//        AudioSource[] sounds = GetComponents<AudioSource>();
-//        fireSound = sounds[0];
-//        reloadSound = sounds[1];
+        //        shootButton.onClick.AddListener(OnShoot);
+        //        AudioSource[] sounds = GetComponents<AudioSource>();
+        //        fireSound = sounds[0];
+        //        reloadSound = sounds[1];
     }
 
     private void Update()
@@ -29,12 +30,18 @@ public class ShootEnemy : MonoBehaviour
             OnShoot();
         }
 
-//        Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward);
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            animator.SetTrigger(Constants.CharatorAnimation.Reload);
+        }
+
+        //        Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward);
     }
 
     private void OnShoot()
     {
         fireSound.Play();
+        animator.SetTrigger(Constants.CharatorAnimation.Fire);
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit))
         {
@@ -51,10 +58,10 @@ public class ShootEnemy : MonoBehaviour
                 Destroy(shootEffectGO, 0.2f);
             }
 
-           if (hit.rigidbody != null)
-           {
-               hit.rigidbody.AddForce(hit.normal * forceAdd);
-           }
+            if (hit.rigidbody != null)
+            {
+                hit.rigidbody.AddForce(hit.normal * forceAdd);
+            }
         }
     }
 }

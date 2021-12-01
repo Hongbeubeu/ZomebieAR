@@ -81,6 +81,7 @@ public class ZomebieController : MonoBehaviour
 
     private void Die()
     {
+        GameManager.instance.currentPopulation--;
         zombieCollider.enabled = false;
         zombieRigidbody.useGravity = false;
         isRunning = false;

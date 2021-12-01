@@ -12,8 +12,12 @@ public class SpawnController : MonoBehaviour
 
     private void SpawnZombie()
     {
-        Vector3 position = gameObject.transform.position;
-
-        GameObject zombieGO = Instantiate(femaleZombiePrefab, new Vector3(position.x, position.y, position.z), Quaternion.Euler(0, Random.Range(0f, 360f), 0));
+        if (GameManager.instance.currentPopulation < GameManager.instance.data.maxPopulation)
+        {
+            GameManager.instance.currentPopulation++;
+            Vector3 position = gameObject.transform.position;
+            GameObject zombieGO = Instantiate(femaleZombiePrefab, new Vector3(position.x, position.y, position.z), Quaternion.Euler(0, Random.Range(0f, 360f), 0));
+        }
     }
 }
+

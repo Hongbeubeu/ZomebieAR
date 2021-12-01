@@ -57,7 +57,7 @@ public class CameraLook : MonoBehaviour
         MouseInput();
         RotatePlayY();
         RotateCameraX();
-//        CameraZoom();
+        //        CameraZoom();
     }
 
     #endregion
@@ -73,7 +73,7 @@ public class CameraLook : MonoBehaviour
 
     private void RotatePlayY()
     {
-//        m_parent.Rotate(Vector3.up * m_mouseX);
+        //        m_parent.Rotate(Vector3.up * m_mouseX);
         m_rotateY += m_mouseX;
         m_rotateY = Mathf.Clamp(m_rotateY, cameraRotateYMin, cameraRotateYMax);
         m_parent.localRotation = Quaternion.Euler(0f, m_rotateY, 0f);
