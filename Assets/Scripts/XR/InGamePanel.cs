@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class InGamePanel : MonoBehaviour
 {
@@ -15,5 +14,10 @@ public class InGamePanel : MonoBehaviour
     public void SetAmmoText(int ammo)
     {
         ammoText.SetText(ammo.ToString());
+    }
+
+    public void SetHealthText(int healthPoint)
+    {
+        health.SetText(healthPoint.ToString());
     }
 }

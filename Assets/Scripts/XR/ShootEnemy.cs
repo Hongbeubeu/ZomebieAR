@@ -1,5 +1,4 @@
 using System.Collections;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +17,8 @@ public class ShootEnemy : MonoBehaviour
     [SerializeField] private AudioSource fireSound;
     [SerializeField] AudioSource reloadSound;
 
+    public Vector3 recoilFactor;
+    private Vector3 originalRotation;
     public int CurrentAmmo
     {
         get => currentAmmo;
@@ -58,20 +59,13 @@ public class ShootEnemy : MonoBehaviour
                 coolDown = 0.01f;
             }
         }
-
-        // if (Input.GetKeyDown(KeyCode.Mouse1))
-        // {
-        //     animator.SetTrigger(Constants.CharatorAnimation.Reload);
-        // }
-
-        //        Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward);
     }
 
     private void OnShoot()
     {
         CurrentAmmo--;
-        Debug.Log(CurrentAmmo);
         fireSound.Play();
+
         animator.SetTrigger(Constants.CharatorAnimation.Fire);
 
         RaycastHit hit;

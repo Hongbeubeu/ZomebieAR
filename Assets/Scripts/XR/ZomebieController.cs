@@ -4,7 +4,7 @@ using DG.Tweening;
 
 public class ZomebieController : MonoBehaviour
 {
-    private float speedFactor = 4f;
+    private float speedFactor = 2f;
     private float health = 100f;
     [SerializeField] private AudioSource bloodHit;
     private AudioSource attackSound;
@@ -54,16 +54,13 @@ public class ZomebieController : MonoBehaviour
 
     private void Move()
     {
+        Debug.DrawRay(transform.position, transform.forward * 5, Color.green);
         var lookAt = player.position;
         lookAt.y = transform.position.y;
-        // if (sequence == null)
-        // {
-        //     sequence = DOTween.Sequence();
-        //     sequence.Append(transform.DOLookAt(lookAt, 0.5f).SetEase(Ease.Linear)).OnComplete(() => sequence.Kill());
-        // }
         transform.LookAt(lookAt);
         transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
-        transform.Translate(Time.deltaTime * speedFactor * transform.forward);
+        var forward = (player.position - transform.position).normalized;
+        transform.Translate(-Time.deltaTime * speedFactor * forward);
     }
 
     public void TakeDamage(float damage)
@@ -105,15 +102,17 @@ public class ZomebieController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("MainCamera"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             isZombieClose = true;
+            var player = collision.gameObject.GetComponent<Player>();
+            player.health.TakeDamage(10);
         }
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.CompareTag("MainCamera"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             isZombieClose = false;
         }

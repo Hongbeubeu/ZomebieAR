@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -20,6 +19,7 @@ public class UIManager : MonoBehaviour
 
     public InitGamePanel initGamePanel;
     public InGamePanel inGamePanel;
+    public BloodScreen bloodScreen;
 
     #region Unity Event
 
@@ -49,5 +49,11 @@ public class UIManager : MonoBehaviour
     public void SetAmmoText(int ammo)
     {
         inGamePanel.SetAmmoText(ammo);
+    }
+
+    public void BloodUIEffect()
+    {
+        bloodScreen.gameObject.SetActive(true);
+        StartCoroutine(bloodScreen.FlickerBlood(0.5f));
     }
 }

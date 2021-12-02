@@ -63,7 +63,7 @@ public class CameraLook : MonoBehaviour
     {
 //        m_parent.Rotate(Vector3.up * m_mouseX);
         m_rotateY += m_mouseX;
-        m_rotateY = Mathf.Clamp(m_rotateY, cameraRotateYMin, cameraRotateYMax);
+        // m_rotateY = Mathf.Clamp(m_rotateY, cameraRotateYMin, cameraRotateYMax);
         m_XAxis.localRotation = Quaternion.Euler(0f, m_rotateY, 0f);
     }
 
