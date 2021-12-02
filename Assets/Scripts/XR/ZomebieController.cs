@@ -4,6 +4,7 @@ using DG.Tweening;
 
 public class ZomebieController : MonoBehaviour
 {
+    private float speedFactor = 4f;
     private float health = 100f;
     [SerializeField] private AudioSource bloodHit;
     private AudioSource attackSound;
@@ -11,13 +12,12 @@ public class ZomebieController : MonoBehaviour
     public int timeBetweenAttacks = 3;
     private float attackCooldownTimer;
     private bool isZombieAttacking;
-    private bool isRunning = false;
+    private bool isRunning;
     private bool isDie;
-    [SerializeReference] private Animator animator;
+    [SerializeField] private Animator animator;
     [SerializeField] private CapsuleCollider zombieCollider;
     [SerializeField] private Rigidbody zombieRigidbody;
     [SerializeField] private Transform player;
-    Sequence sequence;
 
     private void Start()
     {
@@ -62,8 +62,8 @@ public class ZomebieController : MonoBehaviour
         //     sequence.Append(transform.DOLookAt(lookAt, 0.5f).SetEase(Ease.Linear)).OnComplete(() => sequence.Kill());
         // }
         transform.LookAt(lookAt);
-        transform.Translate(transform.forward * Time.deltaTime);
         transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+        transform.Translate(Time.deltaTime * speedFactor * transform.forward);
     }
 
     public void TakeDamage(float damage)

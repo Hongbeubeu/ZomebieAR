@@ -30,7 +30,7 @@ public class ShootEnemy : MonoBehaviour
 
     private void Awake()
     {
-        coolDown = 0.5f;
+        coolDown = 0.01f;
     }
     private void Start()
     {
@@ -55,7 +55,7 @@ public class ShootEnemy : MonoBehaviour
             if (CurrentAmmo > 0)
             {
                 OnShoot();
-                coolDown = 0.5f;
+                coolDown = 0.01f;
             }
         }
 
