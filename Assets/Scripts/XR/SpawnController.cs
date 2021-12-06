@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SpawnController : MonoBehaviour
 {
-    public GameObject femaleZombiePrefab;
+    public GameObject[] zombiePrefabs;
 
     public void InvokeSpawnZombie()
     {
@@ -16,7 +16,9 @@ public class SpawnController : MonoBehaviour
         {
             GameManager.instance.currentPopulation++;
             Vector3 position = gameObject.transform.position;
-            GameObject zombieGO = Instantiate(femaleZombiePrefab, new Vector3(position.x, position.y, position.z), Quaternion.Euler(0, Random.Range(0f, 360f), 0));
+            position.y += 0.1f;
+            var index = Random.Range(0, zombiePrefabs.Length);
+            GameObject zombieGO = Instantiate(zombiePrefabs[index], new Vector3(position.x, position.y, position.z), Quaternion.Euler(0, Random.Range(0f, 360f), 0));
         }
     }
 }

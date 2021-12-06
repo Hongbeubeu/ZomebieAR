@@ -13,9 +13,10 @@ public class ShootEnemy : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject bloodEffect;
     [SerializeField] private GameObject shootingEffect;
-
+    [SerializeField] private ParticleSystem muzzle;
     [SerializeField] private AudioSource fireSound;
-    [SerializeField] AudioSource reloadSound;
+    [SerializeField] private AudioSource reloadSound;
+    [SerializeField] private AudioSource bulletSheelSound;
 
     public Vector3 recoilFactor;
     private Vector3 originalRotation;
@@ -65,7 +66,8 @@ public class ShootEnemy : MonoBehaviour
     {
         CurrentAmmo--;
         fireSound.Play();
-
+        bulletSheelSound.Play();
+        muzzle.Play();
         animator.SetTrigger(Constants.CharatorAnimation.Fire);
 
         RaycastHit hit;
@@ -97,6 +99,7 @@ public class ShootEnemy : MonoBehaviour
         if (CurrentAmmo <= 0)
         {
             animator.SetTrigger(Constants.CharatorAnimation.Reload);
+            reloadSound.Play();
             StartCoroutine(WaitReloadAmmo());
         }
     }
