@@ -2084,6 +2084,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 250
+  damage: 5
   bloodHit: {fileID: 3746652761350026130}
   timeBetweenAttacks: 3
   animator: {fileID: 3746652761359401443}

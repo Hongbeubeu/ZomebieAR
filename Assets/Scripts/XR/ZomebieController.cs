@@ -1,11 +1,11 @@
 using System.Collections;
 using UnityEngine;
-using DG.Tweening;
 
 public class ZomebieController : MonoBehaviour
 {
     private float speedFactor = 2f;
     public float health = 100f;
+    public int damage;
     [SerializeField] private AudioSource bloodHit;
     private AudioSource attackSound;
     private bool isZombieClose;
@@ -106,7 +106,7 @@ public class ZomebieController : MonoBehaviour
         {
             isZombieClose = true;
             var player = collision.gameObject.GetComponent<Player>();
-            player.health.TakeDamage(10);
+            player.health.TakeDamage(damage);
         }
     }
 

@@ -1655,6 +1655,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcfb02063b373bb40b37b57b147c15af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 100
+  damage: 10
   bloodHit: {fileID: 800951203224921274}
   timeBetweenAttacks: 3
   animator: {fileID: 4257830672126540233}
