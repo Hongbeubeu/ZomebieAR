@@ -25782,7 +25782,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1985240854}
-  - component: {fileID: 1985240855}
   m_Layer: 0
   m_Name: CoffinWood
   m_TagString: Untagged
@@ -25814,21 +25813,6 @@ Transform:
   m_Father: {fileID: 1109255407}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1985240855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1985240853}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2389d4d2328a764468b41b9e934981a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  zombiePrefabs:
-  - {fileID: 3746652761350026141, guid: 7d6e92f219e69fb4c9e5724b10aaa0e8, type: 3}
-  - {fileID: 4257830672117009289, guid: c3642d79b1d9fed49a80400a4ade8551, type: 3}
 --- !u!1001 &1988980516
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26771,7 +26755,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2107950530}
-  - component: {fileID: 2107950531}
   m_Layer: 0
   m_Name: CoffinWood (1)
   m_TagString: Untagged
@@ -26803,21 +26786,6 @@ Transform:
   m_Father: {fileID: 1109255407}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2107950531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2107950529}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2389d4d2328a764468b41b9e934981a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  zombiePrefabs:
-  - {fileID: 3746652761350026141, guid: 7d6e92f219e69fb4c9e5724b10aaa0e8, type: 3}
-  - {fileID: 4257830672117009289, guid: c3642d79b1d9fed49a80400a4ade8551, type: 3}
 --- !u!1 &2112093390
 GameObject:
   m_ObjectHideFlags: 0

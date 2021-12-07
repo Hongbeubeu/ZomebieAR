@@ -5,7 +5,7 @@ using DG.Tweening;
 public class ZomebieController : MonoBehaviour
 {
     private float speedFactor = 2f;
-    private float health = 100f;
+    public float health = 100f;
     [SerializeField] private AudioSource bloodHit;
     private AudioSource attackSound;
     private bool isZombieClose;
