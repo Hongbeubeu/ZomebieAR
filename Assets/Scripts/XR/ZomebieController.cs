@@ -6,7 +6,10 @@ public class ZomebieController : MonoBehaviour
     private float speedFactor = 2f;
     public float health = 100f;
     public int damage;
+    public float gravity = 20f;
     [SerializeField] private AudioSource bloodHit;
+    [SerializeField] private AudioSource zombieAttack;
+    [SerializeField] private CharacterController characterController;
     private AudioSource attackSound;
     private bool isZombieClose;
     public int timeBetweenAttacks = 3;
@@ -15,13 +18,11 @@ public class ZomebieController : MonoBehaviour
     private bool isRunning;
     private bool isDie;
     [SerializeField] private Animator animator;
-    [SerializeField] private CapsuleCollider zombieCollider;
-    [SerializeField] private Rigidbody zombieRigidbody;
     [SerializeField] private Transform player;
 
     private void Start()
     {
-        player = FindObjectOfType<Player>().transform;
+        player = FindObjectOfType<FirstPersonController>().transform;
         attackCooldownTimer = timeBetweenAttacks;
         InitializeSounds();
         AwakeAnim();
@@ -59,8 +60,14 @@ public class ZomebieController : MonoBehaviour
         lookAt.y = transform.position.y;
         transform.LookAt(lookAt);
         transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
-        var forward = (player.position - transform.position).normalized;
-        transform.Translate(-Time.deltaTime * speedFactor * forward);
+        var moveDirection = (player.position - transform.position).normalized;
+        moveDirection *= speedFactor;
+        moveDirection.y -= gravity * Time.deltaTime;
+        if (characterController.enabled)
+        {
+            characterController.Move(moveDirection * Time.deltaTime);
+        }
+        // transform.Translate(-Time.deltaTime * speedFactor * forward);
     }
 
     public void TakeDamage(float damage)
@@ -78,9 +85,8 @@ public class ZomebieController : MonoBehaviour
 
     private void Die()
     {
+        characterController.enabled = false;
         GameManager.instance.currentPopulation--;
-        zombieCollider.enabled = false;
-        zombieRigidbody.useGravity = false;
         isRunning = false;
         isDie = true;
         animator.SetTrigger(Constants.CharatorAnimation.Die);
@@ -96,8 +102,6 @@ public class ZomebieController : MonoBehaviour
     {
         yield return new WaitForSeconds(4.43f);
         isRunning = true;
-        GetComponent<Collider>().enabled = true;
-        GetComponent<Rigidbody>().useGravity = true;
     }
 
     private void OnCollisionEnter(Collision collision)

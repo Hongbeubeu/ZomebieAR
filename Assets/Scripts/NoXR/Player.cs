@@ -5,26 +5,34 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public Health health;
+    public float speed;
+    public float jumpSpeed;
+    public float gravity = 20f;
+    public CharacterController characterController;
     private bool isMoving;
+    private Vector3 moveDirection;
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
+        if (characterController.isGrounded)
         {
-            isMoving = true;
+            // We are grounded, so recalculate
+            // move direction directly from axes
+
+            moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
+            moveDirection *= speed;
+
+            if (Input.GetButton("Jump"))
+            {
+                moveDirection.y = jumpSpeed;
+            }
         }
 
-        var h = Input.GetAxis("Horizontal");
-        var v = Input.GetAxis("Vertical");
-        if (h == 0 && v == 0)
-        {
-            isMoving = false;
-        }
-        if (!isMoving)
-        {
-            return;
-        }
-        var dir = new Vector3(h, 0f, v).normalized;
-        transform.Translate(0.2f * dir);
-        transform.forward = -dir;
+        // Apply gravity. Gravity is multiplied by deltaTime twice (once here, and once below
+        // when the moveDirection is multiplied by deltaTime). This is because gravity should be applied
+        // as an acceleration (ms^-2)
+        moveDirection.y -= gravity * Time.deltaTime;
+
+        // Move the controller
+        characterController.Move(moveDirection * Time.deltaTime);
     }
 }
