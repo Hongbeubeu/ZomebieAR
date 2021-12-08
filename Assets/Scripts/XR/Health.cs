@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Health : MonoBehaviour
@@ -14,7 +12,7 @@ public class Health : MonoBehaviour
             healthPoint = value;
             if (healthPoint < 0)
             {
-                Debug.Log("Lose");
+                FindObjectOfType<GameController>().Lose();
                 healthPoint = 0;
             }
             SetHealthText();

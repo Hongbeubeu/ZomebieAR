@@ -7,6 +7,7 @@ public class ZomebieController : MonoBehaviour
     public float health = 100f;
     public int damage;
     public float gravity = 20f;
+    public int goldBonus;
     [SerializeField] private AudioSource bloodHit;
     [SerializeField] private AudioSource zombieAttack;
     [SerializeField] private CharacterController characterController;
@@ -85,6 +86,8 @@ public class ZomebieController : MonoBehaviour
 
     private void Die()
     {
+        var gameController = FindObjectOfType<GameController>();
+        gameController.GainGold(goldBonus);
         characterController.enabled = false;
         GameManager.instance.currentPopulation--;
         isRunning = false;
@@ -106,6 +109,11 @@ public class ZomebieController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (isDie)
+        {
+            return;
+        }
+        
         if (collision.gameObject.CompareTag("Player"))
         {
             isZombieClose = true;

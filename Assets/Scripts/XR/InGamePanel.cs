@@ -5,6 +5,7 @@ public class InGamePanel : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI health;
     [SerializeField] private TextMeshProUGUI ammoText;
+    [SerializeField] private TextMeshProUGUI goldText;
 
     public void SetActive(bool value)
     {
@@ -19,5 +20,10 @@ public class InGamePanel : MonoBehaviour
     public void SetHealthText(int healthPoint)
     {
         health.SetText(healthPoint.ToString());
+    }
+
+    public void SetGoldText(int gold)
+    {
+        goldText.SetText("$" + gold.ToString());
     }
 }

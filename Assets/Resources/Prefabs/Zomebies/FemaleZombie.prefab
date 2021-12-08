@@ -1562,6 +1562,7 @@ MonoBehaviour:
   health: 100
   damage: 10
   gravity: 20
+  goldBonus: 6
   bloodHit: {fileID: 800951203224921274}
   zombieAttack: {fileID: 4257830671466170575}
   characterController: {fileID: 8754038092006228323}
@@ -1674,7 +1675,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e87d081f032b0324da18294566aaa18e, type: 3}
+  m_audioClip: {fileID: 8300000, guid: baab96044a5c3834b9d2a8523a94e379, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1682,7 +1683,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 0
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500

@@ -19,6 +19,8 @@ public class UIManager : MonoBehaviour
 
     public InitGamePanel initGamePanel;
     public InGamePanel inGamePanel;
+    public GameObject winPanel;
+    public GameObject losePanel;
     public BloodScreen bloodScreen;
 
     #region Unity Event
